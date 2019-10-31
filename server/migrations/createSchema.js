@@ -14,6 +14,14 @@ exports.up = pgm => {
         );
     `),
     pgm.sql(`
+        CREATE TABLE "chatwithme"."groups" (
+            "id" SERIAL PRIMARY KEY NOT NULL,
+            "created_by" INT REFERENCES chatwithme.users(id),
+            "group_title" VARCHAR(128),
+            "time_created" TIMESTAMP NOT NULL DEFAULT NOW()
+        );
+    `),
+    pgm.sql(`
         CREATE TABLE "chatwithme"."messages" (
             "id" SERIAL PRIMARY KEY NOT NULL,
             "content" TEXT NOT NULL,
@@ -24,15 +32,7 @@ exports.up = pgm => {
         );
     `),
     pgm.sql(`
-        CREATE TABLE "chatwithme"."groups" (
-            "id" SERIAL PRIMARY KEY NOT NULL,
-            "created_by" INT REFERENCES chatwithme.users(id),
-            "group_title" VARCHAR(128),
-            "time_created" TIMESTAMP NOT NULL DEFAULT NOW()
-        );
-    `),
-    pgm.sql(`
-        CREATE TABLE "chatwithme"."groupmembers" (
+        CREATE TABLE "chatwithme"."groupsmembers" (
             "id" SERIAL PRIMARY KEY NOT NULL,
             "member_id" INT REFERENCES chatwithme.users(id) ON DELETE CASCADE,
             "group_id" INT REFERENCES chatwithme.groups(id) ON DELETE CASCADE,

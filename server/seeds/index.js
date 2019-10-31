@@ -25,6 +25,14 @@ const usersSeeds = [
   }
 ];
 
+const groupsSeeds = [
+  {
+    created_by: 1,
+    group_title: "This a our first group!",
+    time_created: "2019-10-31 09:00:00"
+  }
+];
+
 const messagesSeeds = [
   {
     content: "Here is the first message",
@@ -70,14 +78,6 @@ const messagesSeeds = [
   }
 ];
 
-const groupsSeeds = [
-  {
-    created_by: 1,
-    group_title: "This a our first group!",
-    time_created: "2019-10-31 09:00:00"
-  }
-];
-
 const groupsMembersSeeds = [
   {
     member_id: 1,
@@ -116,21 +116,6 @@ const seed = async () => {
     );
     console.log("Seeding Users... [DONE]");
 
-    // Messages Seeds
-    console.log("Seeding Messages...");
-    await Promise.all(
-      messagesSeeds.map(messagesSeed =>
-        pg.query(
-          squel
-            .insert()
-            .into("chatwithme.messages")
-            .setFields(messagesSeed)
-            .toParam()
-        )
-      )
-    );
-    console.log("Seeding Messages... [DONE]");
-
     // Groups Seeds
     console.log("Seeding Groups...");
     await Promise.all(
@@ -145,6 +130,21 @@ const seed = async () => {
       )
     );
     console.log("Seeding Groups... [DONE]");
+
+    // Messages Seeds
+    console.log("Seeding Messages...");
+    await Promise.all(
+      messagesSeeds.map(messagesSeed =>
+        pg.query(
+          squel
+            .insert()
+            .into("chatwithme.messages")
+            .setFields(messagesSeed)
+            .toParam()
+        )
+      )
+    );
+    console.log("Seeding Messages... [DONE]");
 
     // Groups Seeds
     console.log("Seeding GroupsMembers...");
