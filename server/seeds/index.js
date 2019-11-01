@@ -36,44 +36,44 @@ const groupsSeeds = [
 const messagesSeeds = [
   {
     content: "Here is the first message",
-    user_from: 1,
-    user_to: 2,
+    from_user: 1,
+    to_user: 2,
     time_created: "2019-10-31 10:00:00"
   },
   {
     content: "Here is the second message",
-    user_from: 3,
-    group_to: 1,
+    from_user: 3,
+    to_group: 1,
     time_created: "2019-10-31 11:10:00"
   },
   {
     content: "Here is the third message",
-    user_from: 1,
-    user_to: 2,
+    from_user: 1,
+    to_user: 2,
     time_created: "2019-10-31 12:00:00"
   },
   {
     content: "Here is the fourth message",
-    user_from: 1,
-    user_to: 2,
+    from_user: 1,
+    to_user: 2,
     time_created: "2019-10-31 11:15:00"
   },
   {
     content: "Here is the fifth message",
-    user_from: 2,
-    group_to: 1,
+    from_user: 2,
+    to_group: 1,
     time_created: "2019-10-31 10:30:00"
   },
   {
     content: "Here is the sixth message",
-    user_from: 1,
-    user_to: 3,
+    from_user: 1,
+    to_user: 3,
     time_created: "2019-10-31 10:45:00"
   },
   {
     content: "Here is the seventh message",
-    user_from: 2,
-    user_to: 1,
+    from_user: 2,
+    to_user: 1,
     time_created: "2019-10-31 12:10:00"
   }
 ];

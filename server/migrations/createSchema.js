@@ -25,9 +25,9 @@ exports.up = pgm => {
         CREATE TABLE "chatwithme"."messages" (
             "id" SERIAL PRIMARY KEY NOT NULL,
             "content" TEXT NOT NULL,
-            "user_from" INT REFERENCES chatwithme.users(id) ON DELETE CASCADE,
-            "user_to" INT REFERENCES chatwithme.users(id) ON DELETE CASCADE,
-            "group_to" INT REFERENCES chatwithme.groups(id) ON DELETE CASCADE,
+            "from_user" INT REFERENCES chatwithme.users(id) ON DELETE CASCADE,
+            "to_user" INT REFERENCES chatwithme.users(id) ON DELETE CASCADE,
+            "to_group" INT REFERENCES chatwithme.groups(id) ON DELETE CASCADE,
             "time_created" TIMESTAMP NOT NULL DEFAULT NOW()
         );
     `),

@@ -13,6 +13,7 @@ module.exports = gql`
     getMessages: [Message]!
     getMessageInfo(input: QueryMessageInput!): Message!
     getSessions: [Session]!
+    test: String
   }
 
   type Mutation {
@@ -22,10 +23,6 @@ module.exports = gql`
     addMemberToGroup(memberInfo: MemberInput!): Group!
     openSession(openSessionInfo: SessionInput!): Session!
     closeSession(closeSessionInfo: SessionInput!): Session!
-  }
-
-  type Subscription {
-
   }
 
   #   Main Customs Types
@@ -58,9 +55,9 @@ module.exports = gql`
   type Message {
     id: ID!
     content: String!
-    user_from: User!
-    user_to: User
-    group_to: Group
+    from_user: User!
+    to_user: User
+    to_group: Group
     time_created: Date!
   }
 
@@ -73,33 +70,40 @@ module.exports = gql`
 
   # Main Inputs
 
-  # Queries------------------------
+  #---Queries------------------------
   input QueryUserInput {
-    userId: INT!
+    userId: Int!
     userEmail: String
   }
   input QueryGroupInput {
-    creatorId: INT
+    creatorId: Int
     group_title: String
   }
   input QueryMessageInput {
-    messageId: INT
+    messageId: Int
   }
-  #Mutations----------------------
+
+  #---Mutations----------------------
   input UserInput {
     fullname: String!
     password: String!
     email: String!
   }
   input GroupInput {
-    creatorId: INT!
-    group_title: String!    
+    creatorId: Int!
+    group_title: String!
   }
   input MemberInput {
-    userId: INT!
-    groupId: INT!
+    userId: Int!
+    groupId: Int!
   }
   input SessionInput {
-    userId: INT!
+    userId: Int!
   }
-  `;
+  input MessageInput {
+    content: Int!
+    from_user: Int!
+    to_user: Int
+    to_group: Int
+  }
+`;
