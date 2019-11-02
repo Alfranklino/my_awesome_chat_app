@@ -30,6 +30,11 @@ const groupsSeeds = [
     created_by: 1,
     group_title: "This a our first group!",
     time_created: "2019-10-31 09:00:00"
+  },
+  {
+    created_by: 2,
+    group_title: "This a our second group!",
+    time_created: "2019-10-31 09:00:00"
   }
 ];
 
@@ -92,6 +97,16 @@ const groupsMembersSeeds = [
   {
     member_id: 3,
     group_id: 1,
+    time_added: "2019-10-31 09:00:00"
+  },
+  {
+    member_id: 2,
+    group_id: 2,
+    time_added: "2019-10-31 09:00:00"
+  },
+  {
+    member_id: 4,
+    group_id: 2,
     time_added: "2019-10-31 09:00:00"
   }
 ];
