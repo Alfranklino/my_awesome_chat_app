@@ -1,5 +1,6 @@
 const express = require("express");
-const { ApolloServer } = require("apollo-server-express");
+// const { ApolloServer, PubSub } = require("apollo-server-express");
+const { GraphQLServer, PubSub } = require("graphql-yoga");
 const cors = require("cors"); //TODO: import this...
 const cookieParser = require("cookie-parser");
 
@@ -23,23 +24,49 @@ const corsConfig = {
 
 app.use(cors(corsConfig));
 
-const apolloServer = new ApolloServer({
-  context: ({ req }) => {
-    return { postgres, authUtil, app, req };
-  },
-  typeDefs,
-  resolvers
-});
+const pubsub = new PubSub();
 
-// apolloServer.applyMiddleware({
-//   app
+// apollo-server-express VERSION...
+
+// const apolloServer = new ApolloServer({
+//   context: ({ req }) => {
+//     return { postgres, authUtil, app, req, pubsub };
+//   },
+//   typeDefs,
+//   resolvers
 // });
 
-apolloServer.applyMiddleware({
-  app,
-  cors: corsConfig
+// apolloServer.applyMiddleware({
+//   app,
+//   cors: corsConfig
+// });
+
+// app.listen(PORT, () => {
+//   console.log(`Graphql Playground: http://localhost:${PORT}/graphql`);
+// });
+
+// END OF apollo-server-express VERSION...
+
+// ####################################################################################""
+
+// GRAPHQL-YOGA VERSION...
+
+const server = new GraphQLServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => ({ postgres, authUtil, app, req, pubsub })
 });
 
-app.listen(PORT, () => {
-  console.log(`Graphql Playground: http://localhost:${PORT}/graphql`);
-});
+server.express.use(app);
+
+const options = {
+  port: PORT,
+  endpoint: "/graphql",
+  cors: corsConfig
+};
+
+server.start(options, ({ port }) =>
+  console.log(`Server started, listening on port ${port} for incoming requests.`)
+);
+
+// END OF GRAPHQL-YOGA VERSION...

@@ -1,7 +1,9 @@
 const queryResolvers = require("./resolvers/query/queryResolvers");
-const mutationUserResolvers = require("./resolvers/mutation/mutationResolvers");
+const mutationResolvers = require("./resolvers/mutation/mutationResolvers");
+const subscriptionResolvers = require("./resolvers/subscription/subscriptionResolvers");
 
 module.exports = {
   ...queryResolvers,
-  ...mutationUserResolvers
+  ...mutationResolvers,
+  ...subscriptionResolvers
 };
