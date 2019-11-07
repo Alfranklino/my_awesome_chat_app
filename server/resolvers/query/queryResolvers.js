@@ -58,8 +58,23 @@ module.exports = {
       } catch (error) {
         console.log("Error:", error.detail);
       }
+    },
+
+    async getSessions(parent, args, { postgres, app, authUtil, req }, info) {
+      try {
+        const query = {
+          text: "SELECT * FROM chatwithme.usersessions",
+          values: []
+        };
+
+        const result = await postgres.query(query);
+        return result ? result.rows : null;
+      } catch (error) {
+        console.log("Error:", error.detail);
+      }
     }
   },
+
   User: {
     async groups(parent, args, { postgres, app, authUtil, req }, info) {
       try {
@@ -102,6 +117,36 @@ module.exports = {
       } catch (error) {
         console.log("Error:", error.detail);
       }
+    },
+    async sessions(parent, args, { postgres, app, authUtil, req }, info) {
+      try {
+        const query = {
+          text:
+            "SELECT sessions.* FROM chatwithme.usersessions AS sessions WHERE sessions.user_id = $1",
+          values: [parent.id]
+        };
+
+        result = await postgres.query(query);
+
+        return result ? result.rows : null;
+      } catch (error) {
+        console.log("Error:", error.detail);
+      }
+    },
+    async currentSession(parent, args, { postgres, app, authUtil, req }, info) {
+      try {
+        const query = {
+          text:
+            "SELECT sessions.* FROM chatwithme.usersessions AS sessions WHERE sessions.time_start = (SELECT MAX(time_start) FROM chatwithme.usersessions) WHERE sessions.user_id = $1 AND sessions.status = 'CONNECTED'",
+          values: [parent.id]
+        };
+
+        result = await postgres.query(query);
+
+        return result ? (result.rows ? result.rows[0] : null) : null;
+      } catch (error) {
+        console.log("Error:", error.detail);
+      }
     }
   },
 
@@ -120,6 +165,21 @@ module.exports = {
       } catch (error) {
         console.log("Error:", error.detail);
       }
+    },
+    async messages(parent, args, { postgres, app, autUtil, req }, info) {
+      try {
+        const query = {
+          text:
+            "SELECT messages.* FROM chatwithme.messages AS messages WHERE messages.to_group = $1 ",
+          values: [parent.id]
+        };
+        console.log("Query:", query);
+        const result = await postgres.query(query);
+
+        return result ? result.rows : null;
+      } catch (error) {
+        console.log("Error:", error.detail);
+      }
     }
   },
 
@@ -127,7 +187,7 @@ module.exports = {
     async from_user(parent, args, { postgres, authUtil, app, req }, info) {
       try {
         const query = {
-          text: "SELECT * FROM chatwithme.users AS users WHERE users.id = $1",
+          text: "SELECT * FROM chatwithme.users AS users WHERE users.id = $1", //Normally I should use the memberId as the sender.
           values: [parent.from_user]
         };
         const result = await postgres.query(query);
@@ -154,6 +214,22 @@ module.exports = {
         const query = {
           text: "SELECT * FROM chatwithme.groups AS groups WHERE groups.id = $1",
           values: [parent.to_group]
+        };
+        const result = await postgres.query(query);
+
+        return result.rows ? result.rows[0] : null;
+      } catch (error) {
+        console.log("Error:", error.detail);
+      }
+    }
+  },
+  Session: {
+    async user(parent, args, { postgres, app, authUtil, req }, info) {
+      try {
+        const query = {
+          text:
+            "SELECT users.* FROM chatwithme.users AS users INNER JOIN chatwithme.usersessions AS sessions ON users.id = $1",
+          values: [parent.user_id]
         };
         const result = await postgres.query(query);
 
